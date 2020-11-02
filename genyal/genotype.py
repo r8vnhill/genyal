@@ -5,12 +5,13 @@ Creative Commons Attribution 4.0 International License.
 You should have received a copy of the license along with this
 work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 """
-from typing import Callable, Generic, TypeVar
+from typing import Callable, Generic
 
-DNA = TypeVar("DNA")
+from genyal.core import DNA
 
 
 class GeneFactory(Generic[DNA]):
+    """Factory class for creating genes of type DNA."""
     __generator: Callable
 
     def __init__(self, *args):
