@@ -6,28 +6,26 @@ You should have received a copy of the license along with this
 work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 """
 from copy import copy
-from typing import Callable, List
-
-import numpy
+from typing import Callable, Iterable, List, Optional
 
 from genyal.core import GeneticsCore, GeneticsError
 from genyal.genotype import GeneFactory
 
 
 class Individual(GeneticsCore):
-    __fitness: float
+    __fitness: Optional[float]
     __genes: List
 
     def __init__(self):
         super(Individual, self).__init__()
-        self.__fitness = numpy.nan
+        self.__fitness = None
         self.__genes = []
 
-    def compute_fitness_using(self, fitness_function: Callable[[List], float]):
+    def compute_fitness_using(self, fitness_function: Callable):
         """Computes this individual's fitness if it hasn't been computed yet."""
         if not self.__genes:
             raise GeneticsError("The individual should have genes.")
-        if not numpy.isnan(self.__fitness):
+        if self.__fitness is not None:
             return self
         self.__fitness = fitness_function(self.__genes)
 
