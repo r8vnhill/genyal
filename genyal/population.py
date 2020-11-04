@@ -5,15 +5,18 @@ Creative Commons Attribution 4.0 International License.
 You should have received a copy of the license along with this
 work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 """
+
 from copy import copy
 from random import Random
 from typing import Callable, List, Optional
 
 from genyal.core import DNA, GeneticsCore, GeneticsError
 from genyal.genotype import GeneFactory
+from genyal.operations.crossover import single_point_crossover
 
 
 class Individual(GeneticsCore):
+    __mutation_rate: float
     __fitness: Optional[float]
     __genes: List
 
@@ -21,6 +24,8 @@ class Individual(GeneticsCore):
         super(Individual, self).__init__(Random())
         self.__fitness = None
         self.__genes = []
+        self.__mutation_rate = 0.01
+        self.__crossover_strategy = single_point_crossover
 
     def compute_fitness_using(self, fitness_function: Callable):
         """Computes this individual's fitness if it hasn't been computed yet."""
@@ -35,18 +40,8 @@ class Individual(GeneticsCore):
         for _ in range(0, number_of_genes):
             self.__genes.append(gene_factory.make())
 
-    def single_point_crossover(self, partner: 'Individual', cut_point: int = -1) -> 'Individual':
-        """
-        Returns a new child from mixing this individual with another using a single-point crossover
-        strategy.
-        """
-        if cut_point == -1:
-            cut_point = self._rng.randrange(0, len(self.__genes))
-        child = Individual()
-        child.rng = self._rng
-        crossover_genes = self.__genes[:cut_point] + partner.__genes[cut_point:]
-        child.__genes = crossover_genes
-        return child
+    def crossover(self, partner: 'Individual', *args):
+        return self.__crossover_strategy(self, partner, *args)
 
     @property
     def fitness(self) -> float:
@@ -62,6 +57,14 @@ class Individual(GeneticsCore):
     def genes(self, new_genes):
         """Assigns a new set of genes to this individual"""
         self.__genes = new_genes
+
+    @property
+    def mutation_rate(self) -> float:
+        return self.__mutation_rate
+
+    @mutation_rate.setter
+    def mutation_rate(self, rate: float) -> None:
+        self.__mutation_rate = rate
 
     def __len__(self):
         """The number of genes of this individual"""
