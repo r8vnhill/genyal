@@ -13,6 +13,7 @@ from typing import Callable, List, Optional
 from genyal.core import DNA, GeneticsCore, GeneticsError
 from genyal.genotype import GeneFactory
 from genyal.operations.crossover import single_point_crossover
+from genyal.operations.mutation import simple_mutation
 
 
 class Individual(GeneticsCore):
@@ -26,6 +27,7 @@ class Individual(GeneticsCore):
         self.__genes = []
         self.__mutation_rate = 0.01
         self.__crossover_strategy = single_point_crossover
+        self.__mutation_strategy = simple_mutation
 
     def compute_fitness_using(self, fitness_function: Callable):
         """Computes this individual's fitness if it hasn't been computed yet."""
@@ -42,6 +44,9 @@ class Individual(GeneticsCore):
 
     def crossover(self, partner: 'Individual', *args):
         return self.__crossover_strategy(self, partner, *args)
+
+    def mutate(self, *args):
+        return self.__mutation_strategy(self, *args)
 
     @property
     def fitness(self) -> float:
@@ -65,6 +70,22 @@ class Individual(GeneticsCore):
     @mutation_rate.setter
     def mutation_rate(self, rate: float) -> None:
         self.__mutation_rate = rate
+
+    @property
+    def crossover_strategy(self):
+        return self.__crossover_strategy
+
+    @crossover_strategy.setter
+    def crossover_strategy(self, strategy):
+        self.__crossover_strategy = strategy
+
+    @property
+    def mutation_strategy(self):
+        return self.__mutation_strategy
+
+    @mutation_strategy.setter
+    def mutation_strategy(self, strategy):
+        self.__mutation_strategy = strategy
 
     def __len__(self):
         """The number of genes of this individual"""
