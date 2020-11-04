@@ -44,7 +44,7 @@ class Individual(GeneticsCore):
             cut_point = self._rng.randrange(0, len(self.__genes))
         child = Individual()
         child.rng = self._rng
-        crossover_genes = self.__genes[:cut_point].append(partner.__genes[cut_point:])
+        crossover_genes = self.__genes[:cut_point] + partner.__genes[cut_point:]
         child.__genes = crossover_genes
         return child
 

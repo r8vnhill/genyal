@@ -9,7 +9,7 @@ import random
 import string
 import unittest
 from random import Random
-from typing import List
+from typing import List, Tuple
 
 import pytest
 
@@ -40,6 +40,21 @@ def test_word_guess(str_gene_factory: GeneFactory[str]):
         if individual.fitness > fittest_individual.fitness:
             fittest_individual = individual
     assert fittest_individual.fitness == 3
+
+
+def test_crossover(couple: Tuple[Individual, Individual]):
+    """"""
+    assert couple[0].single_point_crossover(couple[1], 2).genes == "abfg"
+    assert couple[0].single_point_crossover(couple[1], 1).genes == "aefg"
+    assert couple[0].single_point_crossover(couple[1], 0).genes == "defg"
+
+
+@pytest.fixture()
+def couple() -> Tuple[Individual, Individual]:
+    c = (Individual(), Individual())
+    c[0].genes = "abcd"
+    c[1].genes = "defg"
+    return c
 
 
 @pytest.fixture()
