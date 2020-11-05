@@ -16,6 +16,7 @@ class GenyalCore:
     _random_generator: Random
 
     def __init__(self, random_generator: Random):
+        """Initializes a genetic algorithm element with a random number generator."""
         self._random_generator = random_generator
 
     @property

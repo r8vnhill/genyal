@@ -19,7 +19,7 @@ from genyal.operations.mutation import simple_mutation
 class Individual(GenyalCore, Generic[DNA]):
     __fitness: Optional[float]
     __genes: List[DNA]
-    __gene_factory: GeneFactory[Any]
+    __gene_factory: GeneFactory[DNA]
     __mutation_rate: float
     __crossover_strategy: Callable[..., 'Individual']
     __mutation_strategy: Callable[..., 'Individual']
@@ -155,6 +155,10 @@ class Individual(GenyalCore, Generic[DNA]):
     def __len__(self):
         """The number of genes of this individual"""
         return len(self.__genes)
+
+    def __repr__(self) -> str:
+        """An individual is represented by its fitness and its genes."""
+        return f"{self.__fitness} - {self.__genes}"
 
     def __eq__(self, other: Any) -> bool:
         """Two individuals are equal if they have the same fitness"""

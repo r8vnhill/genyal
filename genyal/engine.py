@@ -5,10 +5,8 @@ Creative Commons Attribution 4.0 International License.
 You should have received a copy of the license along with this
 work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 """
-import random
-import string
 from random import Random
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Tuple
 
 from genyal.core import GenyalCore
 from genyal.genotype import GeneFactory
@@ -17,7 +15,7 @@ from genyal.operations.evolution import default_terminating_function, tournament
 
 
 class GenyalEngine(GenyalCore):
-    __crossover_args: list[Any]
+    __crossover_args: Tuple
     __fitness_function: Callable[[list[Any]], float]
     __fittest: Optional[Individual]
     __generations: int
@@ -37,7 +35,7 @@ class GenyalEngine(GenyalCore):
         self.__fittest = None
         self.__selection_strategy = selection_strategy
         self.__selection_args = []
-        self.__crossover_args = []
+        self.__crossover_args = ()
         self.__mutation_args = []
         self.__terminating_function = terminating_function
         self.__generations = 0
@@ -76,7 +74,7 @@ class GenyalEngine(GenyalCore):
         while not self.__terminating_function(self, *args):
             print(str(self.fittest.genes) if self.fittest is not None else "")
             new_population = []
-            for _ in range(0, len(self.__population)):
+            for _ in range(0, int(0.75 * len(self.__population))):
                 partner_a = self.__selection_strategy(self.__population, self._random_generator,
                                                       *self.__selection_args)
                 partner_b = self.__selection_strategy(self.__population, self._random_generator,
@@ -85,8 +83,11 @@ class GenyalEngine(GenyalCore):
                                     *self.__mutation_args)
                 child.compute_fitness_using(self.__fitness_function)
                 new_population.append(child)
+            for i in range(int(0.75 * len(self.__population)), len(self.__population)):
+                new_population.append(self.__population[i])
             new_population.sort()
             self.__population = new_population
+            self.__fittest = new_population[-1]
             self.__generations += 1
 
     def crossover(self, partner_a: Individual, partner_b: Individual, *args) -> Individual:
@@ -105,6 +106,14 @@ class GenyalEngine(GenyalCore):
     def fittest(self):
         return self.__fittest
 
+    @property
+    def crossover_args(self) -> Tuple:
+        return self.__crossover_args
+
+    @crossover_args.setter
+    def crossover_args(self, args):
+        self.__crossover_args = args
+
 
 def fitness_function(genes) -> float:
     return sum([1 if genes[i] == "cat"[i] else 0 for i in range(0, 3)])
@@ -113,13 +122,3 @@ def fitness_function(genes) -> float:
 def terminating_function(engine, _):
     return engine.fittest.genes[0] == "c" and engine.fittest.genes[1] == "a" and \
            engine.fittest.genes[2] == "t"
-
-
-if __name__ == '__main__':
-    gene_factory = GeneFactory[str]()
-    gene_factory.generator = lambda: random.choice(string.ascii_lowercase)
-    engine = GenyalEngine(fitness_function=fitness_function,
-                          terminating_function=terminating_function)
-    engine.create_population(15, 3, gene_factory, 0.1)
-    engine.evolve(5000)
-    print(engine.fittest.genes)
