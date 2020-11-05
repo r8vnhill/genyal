@@ -18,7 +18,7 @@ from genyal.operations.mutation import simple_mutation
 
 class Individual(GeneticsCore, Generic[DNA]):
     __fitness: Optional[float]
-    __genes: Sequence[DNA]
+    __genes: List[DNA]
     __gene_factory: GeneFactory[Any]
     __mutation_rate: float
     __crossover_strategy: Callable[..., 'Individual']
@@ -106,14 +106,14 @@ class Individual(GeneticsCore, Generic[DNA]):
         return self.__fitness
 
     @property
-    def genes(self) -> Sequence[DNA]:
+    def genes(self) -> List[DNA]:
         """The genes of this individual"""
         return copy(self.__genes)
 
     @genes.setter
-    def genes(self, new_genes: Sequence[DNA]):
+    def genes(self, new_genes: List[DNA]):
         """Assigns a new set of genes to this individual"""
-        self.__genes = new_genes
+        self.__genes = list(new_genes)
 
     @property
     def mutation_rate(self) -> float:
@@ -155,6 +155,8 @@ class Individual(GeneticsCore, Generic[DNA]):
         """The number of genes of this individual"""
         return len(self.__genes)
 
-    def __copy__(self):
+    def __copy__(self) -> 'Individual':
         """Returns a copy of this individual."""
-        cp = Individual()
+        return Individual(self.__genes, self.__mutation_rate, self.__gene_factory,
+                          self.__crossover_strategy, self.__mutation_strategy,
+                          self._random_generator)

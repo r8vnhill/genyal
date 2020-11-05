@@ -44,19 +44,21 @@ def test_word_guess(str_gene_factory: GeneFactory[str]):
 
 def test_crossover(couple: Tuple[Individual, Individual]):
     """"""
-    assert couple[0].crossover(couple[1], 2).genes == "abfg"
-    assert couple[0].crossover(couple[1], 1).genes == "aefg"
-    assert couple[0].crossover(couple[1], 0).genes == "defg"
+    assert couple[0].crossover(couple[1], 2).genes == list("abfg")
+    assert couple[0].crossover(couple[1], 1).genes == list("aefg")
+    assert couple[0].crossover(couple[1], 0).genes == list("defg")
 
 
-def test_mutation(str_gene_factory: GeneFactory[str]):
+def test_mutation():
+    gene_factory = GeneFactory[str]()
+    gene_factory.generator = lambda: Random(8000).choice(string.ascii_lowercase)
     individual = Individual()
-    individual.genes = "abcd"
     individual.rng = Random(8000)
-    individual.gene_factory = str_gene_factory
+    individual.genes = "abcd"
+    individual.gene_factory = gene_factory
     individual.mutation_rate = 0.5
     mutated_i = individual.mutate()
-    assert mutated_i.genes == "xfcd"
+    assert mutated_i.genes == list("sbsd")
 
 
 @pytest.fixture()
