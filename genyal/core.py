@@ -13,20 +13,20 @@ DNA = TypeVar("DNA")
 
 class GeneticsCore:
     """Base for the elements involved in a genetic algorithm's population."""
-    _rng: Random
+    _random_generator: Random
 
-    def __init__(self, rng: Random):
-        self._rng = rng
+    def __init__(self, random_generator: Random):
+        self._random_generator = random_generator
 
     @property
     def rng(self) -> Random:
         """The random number generator of this element."""
-        return self._rng
+        return self._random_generator
 
     @rng.setter
     def rng(self, new_generator: Random):
         """Sets a new random number generator."""
-        self._rng = new_generator
+        self._random_generator = new_generator
 
 
 class GeneticsError(Exception):

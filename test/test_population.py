@@ -18,7 +18,7 @@ from genyal.population import Individual
 
 
 def test_creation_with_characters(str_gene_factory: GeneFactory[str]):
-    individuals = Individual.create(number_of_individual=100, number_of_genes=10,
+    individuals = Individual.create(number_of_individuals=100, number_of_genes=10,
                                     gene_factory=str_gene_factory)
     assert len(individuals) == 100
     for individual in individuals:
@@ -28,7 +28,7 @@ def test_creation_with_characters(str_gene_factory: GeneFactory[str]):
 
 
 def test_word_guess(str_gene_factory: GeneFactory[str]):
-    individuals = Individual.create(number_of_individual=100000, number_of_genes=3,
+    individuals = Individual.create(number_of_individuals=100000, number_of_genes=3,
                                     gene_factory=str_gene_factory)
 
     def fitness_function(word: List[str]) -> float:
@@ -47,6 +47,16 @@ def test_crossover(couple: Tuple[Individual, Individual]):
     assert couple[0].crossover(couple[1], 2).genes == "abfg"
     assert couple[0].crossover(couple[1], 1).genes == "aefg"
     assert couple[0].crossover(couple[1], 0).genes == "defg"
+
+
+def test_mutation(str_gene_factory: GeneFactory[str]):
+    individual = Individual()
+    individual.genes = "abcd"
+    individual.rng = Random(8000)
+    individual.gene_factory = str_gene_factory
+    individual.mutation_rate = 0.5
+    mutated_i = individual.mutate()
+    assert mutated_i.genes == "xfcd"
 
 
 @pytest.fixture()
@@ -75,5 +85,4 @@ def seed() -> int:
 
 
 if __name__ == '__main__':
-    print("ayuda")
     unittest.main()
