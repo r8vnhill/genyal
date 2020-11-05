@@ -14,7 +14,7 @@ from typing import List, Tuple
 import pytest
 
 from genyal.genotype import GeneFactory
-from genyal.population import Individual
+from genyal.individuals import Individual
 
 
 def test_creation_with_characters(str_gene_factory: GeneFactory[str]):
@@ -53,7 +53,7 @@ def test_mutation():
     gene_factory = GeneFactory[str]()
     gene_factory.generator = lambda: Random(8000).choice(string.ascii_lowercase)
     individual = Individual()
-    individual.rng = Random(8000)
+    individual.random_generator = Random(8000)
     individual.genes = "abcd"
     individual.gene_factory = gene_factory
     individual.mutation_rate = 0.5

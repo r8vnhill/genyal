@@ -15,7 +15,8 @@ def simple_mutation(original_individual, _=None):
     The second argument is a placeholder.
     """
     new_individual = copy(original_individual)
-    new_individual.genes = [gene if new_individual.rng.random() <= new_individual.mutation_rate
-                            else new_individual.gene_factory.make()
-                            for gene in new_individual.genes]
+    new_individual.genes = [
+        gene if new_individual.random_generator.random() <= new_individual.mutation_rate
+        else new_individual.gene_factory.make()
+        for gene in new_individual.genes]
     return new_individual

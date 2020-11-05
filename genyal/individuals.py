@@ -8,15 +8,15 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 
 from copy import copy
 from random import Random
-from typing import Any, Callable, Generic, List, Optional, Sequence
+from typing import Any, Callable, Generic, List, Optional
 
-from genyal.core import DNA, GeneticsCore, GeneticsError
+from genyal.core import DNA, GeneticsError, GenyalCore
 from genyal.genotype import GeneFactory
 from genyal.operations.crossover import single_point_crossover
 from genyal.operations.mutation import simple_mutation
 
 
-class Individual(GeneticsCore, Generic[DNA]):
+class Individual(GenyalCore, Generic[DNA]):
     __fitness: Optional[float]
     __genes: List[DNA]
     __gene_factory: GeneFactory[Any]
@@ -61,8 +61,8 @@ class Individual(GeneticsCore, Generic[DNA]):
         self.__gene_factory = gene_factory
 
     @classmethod
-    def create(cls, number_of_individuals: int, number_of_genes: int, gene_factory: GeneFactory) \
-            -> List['Individual']:
+    def create(cls, number_of_individuals: int, number_of_genes: int, gene_factory: GeneFactory,
+               mutation_rate: float) -> List['Individual']:
         """
         Factory method to easily create a population of individuals.
 
@@ -76,12 +76,12 @@ class Individual(GeneticsCore, Generic[DNA]):
         """
         individuals = []
         for _ in range(0, number_of_individuals):
-            individual = Individual()
+            individual = Individual(mutation_rate=mutation_rate)
             individual.set(number_of_genes, gene_factory)
             individuals.append(individual)
         return individuals
 
-    def compute_fitness_using(self, fitness_function: Callable):
+    def compute_fitness_using(self, fitness_function: Callable[[list[DNA]], float]):
         """Computes this individual's fitness if it hasn't been computed yet."""
         if not self.__genes:
             raise GeneticsError("The individual should have genes.")
@@ -92,6 +92,7 @@ class Individual(GeneticsCore, Generic[DNA]):
         """Generate the genes of the individual."""
         for _ in range(0, number_of_genes):
             self.__genes.append(gene_factory.make())
+        self.__gene_factory = gene_factory
 
     def crossover(self, partner: 'Individual', *args):
         return self.__crossover_strategy(self, partner, *args)
@@ -154,6 +155,26 @@ class Individual(GeneticsCore, Generic[DNA]):
     def __len__(self):
         """The number of genes of this individual"""
         return len(self.__genes)
+
+    def __eq__(self, other: Any) -> bool:
+        """Two individuals are equal if they have the same fitness"""
+        return isinstance(other, Individual) and self.__fitness == other.__fitness
+
+    def __lt__(self, other: Any) -> bool:
+        """Individuals are sorted according to their fitness."""
+        return isinstance(other, Individual) and self.__fitness < other.__fitness
+
+    def __le__(self, other):
+        """Individuals are sorted according to their fitness."""
+        return isinstance(other, Individual) and self.__fitness <= other.__fitness
+
+    def __gt__(self, other) -> bool:
+        """Individuals are sorted according to their fitness."""
+        return isinstance(other, Individual) and self.__fitness > other.__fitness
+
+    def __ge__(self, other) -> bool:
+        """Individuals are sorted according to their fitness."""
+        return isinstance(other, Individual) and self.__fitness >= other.__fitness
 
     def __copy__(self) -> 'Individual':
         """Returns a copy of this individual."""

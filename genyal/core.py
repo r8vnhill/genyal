@@ -11,7 +11,7 @@ from typing import TypeVar
 DNA = TypeVar("DNA")
 
 
-class GeneticsCore:
+class GenyalCore:
     """Base for the elements involved in a genetic algorithm's population."""
     _random_generator: Random
 
@@ -19,12 +19,12 @@ class GeneticsCore:
         self._random_generator = random_generator
 
     @property
-    def rng(self) -> Random:
+    def random_generator(self) -> Random:
         """The random number generator of this element."""
         return self._random_generator
 
-    @rng.setter
-    def rng(self, new_generator: Random):
+    @random_generator.setter
+    def random_generator(self, new_generator: Random):
         """Sets a new random number generator."""
         self._random_generator = new_generator
 

@@ -2,6 +2,7 @@
 
 ## Version 0.1
 
+- ``0.1.8`` Genyal GA engine
 - ``0.1.7`` Simple mutation strategy
 - ``0.1.6`` Added parameters to individual constructor
 - ``WIP-0.1.5`` ~~Mutation~~
