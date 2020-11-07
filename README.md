@@ -76,7 +76,7 @@ The engine will take care of maintaining and evolving the population.
 
 ```python
 engine = GenyalEngine(fitness_function=fitness_fun, terminating_function=target)
-# We create an initial population of 16 words (Individuals) with words of 3 characters (genes)
+# We create an initial population of 16 words (Individuals) of 3 characters (genes)
 # using our previously defined gene factory.
 engine.create_population(16, 3, gene_factory)
 engine.evolve()
