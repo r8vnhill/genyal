@@ -91,11 +91,9 @@ class GenyalEngine(GenyalCore):
         """
         while not self.__terminating_function(self, *args):
             new_population = []
-            for _ in range(0, int(0.75 * len(self.__population))):
+            for _ in range(0, len(self.__population)):
                 child = self.__create_offspring()
                 new_population.append(child)
-            for i in range(int(0.75 * len(self.__population)), len(self.__population)):
-                new_population.append(self.__population[i])
             new_population.sort()
             self.__population = new_population
             self.__fittest = new_population[-1]
