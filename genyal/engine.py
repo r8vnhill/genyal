@@ -125,6 +125,11 @@ class GenyalEngine(GenyalCore):
         return child
 
     @property
+    def population(self) -> List[Individual]:
+        """The individuals of the current generation."""
+        return self.__population
+
+    @property
     def generation(self) -> int:
         """The number of generations the population has evolved."""
         return self.__generations
