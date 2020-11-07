@@ -7,11 +7,12 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 """
 from copy import copy
 from random import Random
+from typing import List
 
 from genyal.individuals import Individual
 
 
-def tournament_selection(population: list[Individual], random_generator: Random = Random(),
+def tournament_selection(population: List[Individual], random_generator: Random = Random(),
                          matches: int = 5) -> Individual:
     """
     Selects the fittest from a group of individuals.

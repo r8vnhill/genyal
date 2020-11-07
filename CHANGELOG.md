@@ -2,6 +2,7 @@
 
 ## Version 0.1
 
+- ``0.1.11.3`` FIX: Compatibility issue with list typing (revised) 
 - ``0.1.11.2`` FIX: Compatibility issue with list typing 
 - ``0.1.11.1`` Added init scripts
 - ``0.1.11`` Included install and use instructions to the readme
