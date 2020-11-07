@@ -18,12 +18,9 @@ from genyal.individuals import Individual
 from genyal.operations.crossover import CrossoverError, single_point_crossover
 
 
-def test_random_picked_single_point_crossover():
-    assert False
-
-
+@pytest.mark.repeat(16)
 def test_not_matching_couples(ascii_gene_factory: GeneFactory[str],
-                              random_generator: random.Random):
+                              random_generator: random.Random, seed: int):
     individual = Individual(gene_factory=ascii_gene_factory, random_generator=random_generator)
     individual.set(number_of_genes=random_generator.randint(1, 32))
 
@@ -35,13 +32,27 @@ def test_not_matching_couples(ascii_gene_factory: GeneFactory[str],
     erroneous_individual.set(unmatching_size)
     with pytest.raises(CrossoverError) as error:
         single_point_crossover(individual, erroneous_individual)
-        assert unmatching_error_msg(len(individual), len(erroneous_individual)) in error.value.cause
+        assert unmatching_error_msg(len(individual), len(
+            erroneous_individual)) in error.value.cause, f"Test failed with seed: {seed}"
+
+
+def test_random_picked_single_point_crossover(couple: Tuple[Individual, Individual], seed: int):
+    expected_cut_point = random.Random(seed)
+    couple[0].random_generator = random.Random(seed)
+    offspring = single_point_crossover(couple[0], couple[1])
+    assert False
 
 
 @pytest.fixture
-def couple(gene_factory: GeneFactory, seed: int) -> Tuple[Individual, Individual]:
+def couple(ascii_gene_factory: GeneFactory[str], random_generator: random.Random) \
+        -> Tuple[Individual, Individual]:
     """A pair of individuals"""
-    return Individual(gene_factory), Individual(gene_factory)
+    couple = (Individual(gene_factory=ascii_gene_factory, random_generator=random_generator),
+              Individual(gene_factory=ascii_gene_factory, random_generator=random_generator))
+    number_of_genes = random_generator.randint(1, 64)
+    couple[0].set(number_of_genes)
+    couple[1].set(number_of_genes)
+    return couple
 
 
 @pytest.fixture
