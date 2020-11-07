@@ -86,7 +86,7 @@ print(
     f"{engine.fittest.fitness}")
 ```
 
-If you run the code the script will print something like:
+If you run the code it will print something like:
 ```
 Found solution in 543 generations
 Fittest individual: "owo" with fitness: 3
