@@ -95,7 +95,7 @@ class Individual(GenyalCore, Generic[DNA]):
             individuals.append(individual)
         return individuals
 
-    def compute_fitness_using(self, fitness_function: Callable[[list[DNA]], float]):
+    def compute_fitness_using(self, fitness_function: Callable[[List[DNA]], float]):
         """Computes this individual's fitness if it hasn't been computed yet."""
         if not self.__genes:
             raise GeneticsError("The individual should have genes.")

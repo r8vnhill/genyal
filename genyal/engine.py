@@ -6,7 +6,7 @@ You should have received a copy of the license along with this
 work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 """
 from random import Random
-from typing import Any, Callable, Optional, Tuple
+from typing import Any, Callable, List, Optional, Tuple
 
 from genyal.core import GenyalCore
 from genyal.genotype import GeneFactory
@@ -20,12 +20,12 @@ class GenyalEngine(GenyalCore):
     This class is in charge of creating, maintaining and evolving a population.
     """
     __crossover_args: Tuple
-    __fitness_function: Callable[[list[Any]], float]
+    __fitness_function: Callable[[List[Any]], float]
     __fittest: Optional[Individual]
     __generations: int
-    __mutation_args: list[Any]
-    __population: list[Individual]
-    __selection_args: list[Any]
+    __mutation_args: List[Any]
+    __population: List[Individual]
+    __selection_args: List[Any]
     __selection_strategy: Callable[..., Individual]
     __terminating_function: Callable[..., bool]
 
