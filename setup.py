@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="genyal",  # Replace with your own username
-    version="0.1.1",
+    version="0.1.10",
     author="Ignacio Slater Muñoz",
     author_email="islaterm@gmail.com",
     description="A framework for genetic algorithms in Python",
@@ -15,7 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: Creative Commons Attribution 4.0 International License",
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.7',

@@ -10,10 +10,9 @@ from copy import copy
 
 def single_point_crossover(individual, partner, cut_point: int = -1):
     """
-    Returns a new child from mixing this individual with another using a single-point crossover
-    strategy.
+    Returns a new child from mixing two individuals using a single-point crossover strategy.
+    By default the cut point is selected at random.
     """
-    from genyal.individuals import Individual
     if cut_point == -1:
         cut_point = individual.random_generator.randrange(0, len(individual.genes))
     child = copy(individual)

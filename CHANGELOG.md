@@ -2,6 +2,7 @@
 
 ## Version 0.1
 
+- ``0.1.10`` Added missing documentation
 - ``0.1.9`` Population evolution
 - ``0.1.8`` Genyal GA engine
 - ``0.1.7`` Simple mutation strategy

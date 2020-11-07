@@ -31,5 +31,6 @@ class GenyalCore:
 
 
 class GeneticsError(Exception):
+    """When there's an error on the genetic configuration of an element."""
     def __init__(self, cause: str):
         super(GeneticsError, self).__init__(cause)
