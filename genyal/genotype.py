@@ -15,16 +15,29 @@ class GeneFactory(Generic[DNA]):
     __generator: Callable
 
     def __init__(self, *args):
+        """
+        Creates a new factory to make genes.
+        Args:
+            *args:
+                In case that the generator function of this factory needs arguments they can be
+                supplied by using the constructor.
+        """
         self.__generator = lambda x: x  # identity function by default
         self.__args = args
 
     @property
-    def generator(self) -> Callable:
+    def generator(self) -> Callable[..., DNA]:
+        """The generator is the function that the factory is going to use to create new genes."""
         return self.__generator
 
     @generator.setter
-    def generator(self, generator_function: Callable) -> None:
+    def generator(self, generator_function: Callable[..., DNA]) -> None:
+        """Gives a new generator function to the factory."""
         self.__generator = generator_function
 
     def make(self) -> DNA:
+        """
+        Creates a new gene using the factory's generator function and (if present) the arguments
+        given on the constructor.
+        """
         return self.__generator(*self.__args)

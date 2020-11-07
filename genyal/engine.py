@@ -15,6 +15,10 @@ from genyal.operations.evolution import default_terminating_function, tournament
 
 
 class GenyalEngine(GenyalCore):
+    """
+    The engine is the main component of Genyal.
+    This class is in charge of creating, maintaining and evolving a population.
+    """
     __crossover_args: Tuple
     __fitness_function: Callable[[list[Any]], float]
     __fittest: Optional[Individual]
@@ -29,6 +33,20 @@ class GenyalEngine(GenyalCore):
                  fitness_function: Callable[..., float] = lambda _: 0,
                  selection_strategy=tournament_selection,
                  terminating_function=default_terminating_function):
+        """
+        Initializes the values of the engine.
+
+        Args:
+            random_generator:
+                The random number generator used by the engine.
+            fitness_function:
+                The function to calculate the fitness of the population's individuals.
+                If none given, the default function returns 0 for any individual.
+            selection_strategy:
+                The strategy to select the individuals that will participate in the crossover.
+            terminating_function:
+                The function that will decide when to stop the evolution.
+        """
         super(GenyalEngine, self).__init__(random_generator)
         self.__population = []
         self.__fitness_function = fitness_function
@@ -72,53 +90,56 @@ class GenyalEngine(GenyalCore):
                 The arguments passed to the terminating function.
         """
         while not self.__terminating_function(self, *args):
-            print(str(self.fittest.genes) if self.fittest is not None else "")
             new_population = []
-            for _ in range(0, int(0.75 * len(self.__population))):
-                partner_a = self.__selection_strategy(self.__population, self._random_generator,
-                                                      *self.__selection_args)
-                partner_b = self.__selection_strategy(self.__population, self._random_generator,
-                                                      *self.__selection_args)
-                child = self.mutate(self.crossover(partner_a, partner_b, *self.__crossover_args),
-                                    *self.__mutation_args)
-                child.compute_fitness_using(self.__fitness_function)
+            for _ in range(0, len(self.__population)):
+                child = self.__create_offspring()
                 new_population.append(child)
-            for i in range(int(0.75 * len(self.__population)), len(self.__population)):
-                new_population.append(self.__population[i])
             new_population.sort()
             self.__population = new_population
             self.__fittest = new_population[-1]
             self.__generations += 1
 
     def crossover(self, partner_a: Individual, partner_b: Individual, *args) -> Individual:
+        """Performs a crossover between two individuals and returns the offspring."""
         partner_a.random_generator = self._random_generator
         return partner_a.crossover(partner_b, *args)
 
     def mutate(self, individual: Individual, *args) -> Individual:
+        """Mutates an individual and returns the result of the mutation."""
         individual.random_generator = self.random_generator
         return individual.mutate(*args)
 
+    def __create_offspring(self):
+        """
+        Creates an offspring from a couple.
+        The partners are selected from the population and the offspring is obtained via crossover
+        and mutation.
+        """
+        partner_a = self.__selection_strategy(self.__population, self._random_generator,
+                                              *self.__selection_args)
+        partner_b = self.__selection_strategy(self.__population, self._random_generator,
+                                              *self.__selection_args)
+        child = self.mutate(self.crossover(partner_a, partner_b, *self.__crossover_args),
+                            *self.__mutation_args)
+        child.compute_fitness_using(self.__fitness_function)
+        return child
+
     @property
     def generation(self) -> int:
+        """The number of generations the population has evolved."""
         return self.__generations
 
     @property
     def fittest(self):
+        """The individual with the greatest fitness from the population"""
         return self.__fittest
 
     @property
     def crossover_args(self) -> Tuple:
+        """A tuple with extra arguments to be passed to the crossover operation."""
         return self.__crossover_args
 
     @crossover_args.setter
     def crossover_args(self, args):
+        """Sets the arguments needed by the crossover operation."""
         self.__crossover_args = args
-
-
-def fitness_function(genes) -> float:
-    return sum([1 if genes[i] == "cat"[i] else 0 for i in range(0, 3)])
-
-
-def terminating_function(engine, _):
-    return engine.fittest.genes[0] == "c" and engine.fittest.genes[1] == "a" and \
-           engine.fittest.genes[2] == "t"
