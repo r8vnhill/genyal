@@ -16,8 +16,8 @@ You'll find either, very simple implementations of genetic algorithms from scrat
 libraries that are, by no means, something that someone with little experience in the field of
 evolutionary programming can easily use; nothing in between.
 _Genyal_ is that missing "in between", by providing a simple interface so users new to the topic
-can learn and use it without need of being experts and flexible enough so that people can adapt it
-to mor sophisticated scenarios.
+can learn and use it without need of being experts, and flexible enough so that people can adapt it
+to more sophisticated scenarios.
 
 ## Usage
 
