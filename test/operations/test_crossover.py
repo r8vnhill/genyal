@@ -36,11 +36,13 @@ def test_not_matching_couples(ascii_gene_factory: GeneFactory[str],
             erroneous_individual)) in error.value.cause, f"Test failed with seed: {seed}"
 
 
-def test_random_picked_single_point_crossover(couple: Tuple[Individual, Individual], seed: int):
-    expected_cut_point = random.Random(seed)
+@pytest.mark.repeat(32)
+def test_single_point_crossover(couple: Tuple[Individual, Individual], seed: int):
+    expected_cut_point = random.Random(seed).randrange(0, len(couple[0]))
     couple[0].random_generator = random.Random(seed)
     offspring = single_point_crossover(couple[0], couple[1])
-    assert False
+    assert offspring.genes == (
+            couple[0].genes[:expected_cut_point] + couple[1].genes[expected_cut_point:])
 
 
 @pytest.fixture
