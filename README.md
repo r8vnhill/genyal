@@ -28,9 +28,7 @@ To do so, you can get it directly from PyPi or, with pip:
 pip install genyal
 ```
 
-## Examples
-
-### Guessing a word
+## Example: Guessing a word
 
 Let's check a very simple example.
 A program to guess a given word.
@@ -43,24 +41,14 @@ For this we can implement a generator function like:
 import random
 import string
 
+from genyal.genotype import GeneFactory
+from genyal.engine import GenyalEngine
+
 def random_char():
     return random.choice(string.ascii_lowercase)
-```
-
-And then we create a factory with that function as its generator:
-
-```python
-from genyal.genotype import GeneFactory
 
 gene_factory = GeneFactory[str]()
 gene_factory.generator = random_char
-```
-
-Next, we're gonna need a way to check how close the individual is to our target word, let's try to 
-make it guess _owo_.
-
-```python
-from genyal.engine import GenyalEngine
 
 # This is how the engine will select the fittest individuals
 def fitness_fun(word: list[str]) -> float:
@@ -69,12 +57,7 @@ def fitness_fun(word: list[str]) -> float:
 # This is the condition to stop the evolution
 def target(genyal_engine: GenyalEngine) -> bool:
     return "".join(genyal_engine.fittest.genes) == "owo"
-```
 
-Now, we'll start the engine.
-The engine will take care of maintaining and evolving the population.
-
-```python
 engine = GenyalEngine(fitness_function=fitness_fun, terminating_function=target)
 # We create an initial population of 16 words (Individuals) of 3 characters (genes)
 # using our previously defined gene factory.
@@ -92,4 +75,5 @@ Found solution in 543 generations
 Fittest individual: "owo" with fitness: 3
 ```
 
-### More complex examples will be added in future iterations.
+You can find the explanation of this code, along with other examples, at the project's 
+[wiki](https://github.com/islaterm/genyal/wiki)

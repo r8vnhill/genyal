@@ -1,5 +1,9 @@
 # ChangeLog
 
+## Version 0.2
+
+- ``0.2.0`` Genyal's first release.
+
 ## Version 0.1
 
 - ``0.1.11.3`` FIX: Compatibility issue with list typing (revised) 
