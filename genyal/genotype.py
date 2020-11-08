@@ -14,7 +14,7 @@ class GeneFactory(Generic[DNA]):
     """Factory class for creating genes of type DNA."""
     __generator: Callable
 
-    def __init__(self, *args):
+    def __init__(self, generator=id):
         """
         Creates a new factory to make genes.
         Args:
@@ -22,8 +22,7 @@ class GeneFactory(Generic[DNA]):
                 In case that the generator function of this factory needs arguments they can be
                 supplied by using the constructor.
         """
-        self.__generator = lambda x: x  # identity function by default
-        self.__args = args
+        self.__generator = generator
 
     @property
     def generator(self) -> Callable[..., DNA]:
@@ -35,9 +34,9 @@ class GeneFactory(Generic[DNA]):
         """Gives a new generator function to the factory."""
         self.__generator = generator_function
 
-    def make(self) -> DNA:
+    def make(self, *args) -> DNA:
         """
         Creates a new gene using the factory's generator function and (if present) the arguments
         given on the constructor.
         """
-        return self.__generator(*self.__args)
+        return self.__generator(*args)

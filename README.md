@@ -5,19 +5,19 @@
 This work is licensed under a 
 [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
 
-![logo](resources/genyal-logo.png)
+<img src="resources/genyal-logo.png" alt="logo" height="200"/>
 
 __Genyal__ is a genetic algorithm framework aimed to be as simple to use as it can be.
-Evolution is a natural process, so using evolutionary algorithms should feel natural.
+Evolution is natural, so using evolutionary algorithms should feel natural as well.
 
 One of the main benefits of evolutionary programming is making it simple to solve complicated 
 problems, and that's something that most implementations of this kind of algorithms seems to forget.
 You'll find either, very simple implementations of genetic algorithms from scratch, or full fledged
 libraries that are, by no means, something that someone with little experience in the field of
-evolutionary can easily use; nothing in between.
+evolutionary programming can easily use; nothing in between.
 _Genyal_ is that missing "in between", by providing a simple interface so users new to the topic
-can learn and use it without need of being experts and flexible enough so that people can adapt it
-to mor sophisticated scenarios.
+can learn and use it without need of being experts, and flexible enough so that people can adapt it
+to more sophisticated scenarios.
 
 ## Usage
 
@@ -76,7 +76,7 @@ The engine will take care of maintaining and evolving the population.
 
 ```python
 engine = GenyalEngine(fitness_function=fitness_fun, terminating_function=target)
-# We create an initial population of 16 words (Individuals) with words of 3 characters (genes)
+# We create an initial population of 16 words (Individuals) of 3 characters (genes)
 # using our previously defined gene factory.
 engine.create_population(16, 3, gene_factory)
 engine.evolve()
@@ -86,7 +86,7 @@ print(
     f"{engine.fittest.fitness}")
 ```
 
-If you run the code the script will print something like:
+If you run the code it will print something like:
 ```
 Found solution in 543 generations
 Fittest individual: "owo" with fitness: 3

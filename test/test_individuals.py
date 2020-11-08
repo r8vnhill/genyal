@@ -43,7 +43,6 @@ def test_word_guess(str_gene_factory: GeneFactory[str]):
 
 
 def test_crossover(couple: Tuple[Individual, Individual]):
-    """"""
     assert couple[0].crossover(couple[1], 2).genes == list("abfg")
     assert couple[0].crossover(couple[1], 1).genes == list("aefg")
     assert couple[0].crossover(couple[1], 0).genes == list("defg")

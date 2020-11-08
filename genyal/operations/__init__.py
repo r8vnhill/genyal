@@ -1,0 +1,1 @@
+ALL = ["crossover", "evolution", "mutation"]
