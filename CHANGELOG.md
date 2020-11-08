@@ -2,6 +2,7 @@
 
 ## Version 0.1
 
+- ``0.1.11.3`` FIX: Compatibility issue with list typing (revised) 
 - ``0.1.15.1`` Tested engine with word matching problem
 - ``0.1.14`` Gene factory tests
 - ``0.1.13.1`` Basic engine creation tests
