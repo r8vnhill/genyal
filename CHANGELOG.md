@@ -2,6 +2,7 @@
 
 ## Version 0.1
 
+- ``0.1.14`` Gene factory tests
 - ``0.1.11.2`` FIX: Compatibility issue with list typing 
 - ``0.1.11.1`` Added init scripts
 - ``0.1.11`` Included install and use instructions to the readme
