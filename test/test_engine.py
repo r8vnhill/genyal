@@ -1,3 +1,4 @@
+import string
 import sys
 import unittest
 from random import Random, random, randrange
@@ -35,13 +36,44 @@ def test_basic_engine(seed: int) -> None:
         assert individual.fitness == 0
 
 
-def test_word_match_engine(match_word_engine: GenyalEngine) -> None:
-    pass
+@pytest.mark.repeat(32)
+def test_word_match_engine(match_word_engine: GenyalEngine, population_size: int,
+                           ascii_gene_factory: GeneFactory[str], random_word: str,
+                           mutation_rate: float, random_generator: Random, seed: int) -> None:
+    match_word_engine.factory_generator_args = (random_generator,)
+    match_word_engine.fitness_function_args = (random_word,)
+    match_word_engine.create_population(population_size, len(random_word), ascii_gene_factory,
+                                        mutation_rate)
+    match_word_engine.evolve(random_word)
+    assert "".join(match_word_engine.fittest.genes) == random_word, f"Test failed with seed: {seed}"
 
 
 @pytest.fixture
 def match_word_engine(random_generator: Random) -> GenyalEngine:
     return GenyalEngine(random_generator, match_word_fitness, terminating_function=exact_match)
+
+
+@pytest.fixture()
+def ascii_gene_factory() -> GeneFactory[str]:
+    return GeneFactory(generator=lambda r: r.choice(string.ascii_lowercase))
+
+
+@pytest.fixture()
+def random_word(random_generator: Random) -> str:
+    word = ""
+    for _ in range(4, 8):
+        word += random_generator.choice(string.ascii_lowercase)
+    return word
+
+
+@pytest.fixture()
+def population_size(random_generator: Random) -> int:
+    return random_generator.randint(4, 64)
+
+
+@pytest.fixture()
+def mutation_rate(random_generator: Random) -> float:
+    return random_generator.random()
 
 
 @pytest.fixture()

@@ -73,7 +73,7 @@ class Individual(GenyalCore, Generic[DNA]):
 
     @classmethod
     def create(cls, number_of_individuals: int, number_of_genes: int,
-               gene_factory: GeneFactory[DNA], mutation_rate: float = 0.01) \
+               gene_factory: GeneFactory[DNA], mutation_rate: float = 0.01, *args) \
             -> List['Individual[DNA]']:
         """
         Factory method to easily create a population of individuals.
@@ -90,23 +90,22 @@ class Individual(GenyalCore, Generic[DNA]):
         """
         individuals = []
         for _ in range(0, number_of_individuals):
-            individual = Individual(mutation_rate=mutation_rate)
-            individual.set(number_of_genes, gene_factory)
+            individual = Individual(gene_factory=gene_factory, mutation_rate=mutation_rate)
+            individual.set(number_of_genes, *args)
             individuals.append(individual)
         return individuals
 
-    def compute_fitness_using(self, fitness_function: Callable[[List[DNA]], float]):
+    def compute_fitness_using(self, fitness_function: Callable[..., float], *args):
         """Computes this individual's fitness if it hasn't been computed yet."""
         if not self.__genes:
             raise GeneticsError("The individual should have genes.")
         if self.__fitness is None:
-            self.__fitness = fitness_function(self.__genes)
+            self.__fitness = fitness_function(self.__genes, *args)
 
-    def set(self, number_of_genes: int, gene_factory: GeneFactory[DNA]):
+    def set(self, number_of_genes: int, *args):
         """Generate the genes of the individual."""
         for _ in range(0, number_of_genes):
-            self.__genes.append(gene_factory.make())
-        self.__gene_factory = gene_factory
+            self.__genes.append(self.__gene_factory.make(*args))
 
     def crossover(self, partner: 'Individual[DNA]', *args):
         return self.__crossover_strategy(self, partner, *args)

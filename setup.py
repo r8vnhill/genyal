@@ -18,5 +18,5 @@ setuptools.setup(
         # "License :: OSI Approved :: Creative Commons Attribution 4.0 International License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.9',
 )

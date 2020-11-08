@@ -2,7 +2,11 @@
 
 ## Version 0.1
 
+- ``0.1.15.1`` Tested engine with word matching problem
+- ``0.1.14`` Gene factory tests
 - ``0.1.13.1`` Basic engine creation tests
+- ``0.1.12.2`` Tests for single point crossover
+- ``0.1.12.1`` Require individuals to match in size for the crossover
 - ``0.1.11.2`` FIX: Compatibility issue with list typing 
 - ``0.1.11.1`` Added init scripts
 - ``0.1.11`` Included install and use instructions to the readme

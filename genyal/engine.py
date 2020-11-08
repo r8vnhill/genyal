@@ -19,6 +19,8 @@ class GenyalEngine(GenyalCore):
     The engine is the main component of Genyal.
     This class is in charge of creating, maintaining and evolving a population.
     """
+    __fitness_function_args: Tuple
+    __factory_generator_args: Tuple
     __crossover_args: Tuple
     __fitness_function: Callable[[List[Any]], float]
     __fittest: Optional[Individual]
@@ -50,6 +52,7 @@ class GenyalEngine(GenyalCore):
         super(GenyalEngine, self).__init__(random_generator)
         self.__population = []
         self.__fitness_function = fitness_function
+        self.__fitness_function_args = ()
         self.__fittest = None
         self.__selection_strategy = selection_strategy
         self.__selection_args = []
@@ -57,6 +60,7 @@ class GenyalEngine(GenyalCore):
         self.__mutation_args = []
         self.__terminating_function = terminating_function
         self.__generations = 0
+        self.__factory_generator_args = ()
 
     def create_population(self, population_size: int, individual_size: int,
                           gene_factory: GeneFactory, mutation_rate=0.01):
@@ -74,9 +78,9 @@ class GenyalEngine(GenyalCore):
                 The factory to create the genes of each individual
         """
         self.__population = Individual.create(population_size, individual_size, gene_factory,
-                                              mutation_rate)
+                                              mutation_rate, *self.__factory_generator_args)
         for member in self.__population:
-            member.compute_fitness_using(self.__fitness_function)
+            member.compute_fitness_using(self.__fitness_function, *self.__fitness_function_args)
         self.__population.sort()
         self.__fittest = self.__population[-1]
 
@@ -120,8 +124,9 @@ class GenyalEngine(GenyalCore):
         partner_b = self.__selection_strategy(self.__population, self._random_generator,
                                               *self.__selection_args)
         child = self.mutate(self.crossover(partner_a, partner_b, *self.__crossover_args),
+                            self._random_generator,
                             *self.__mutation_args)
-        child.compute_fitness_using(self.__fitness_function)
+        child.compute_fitness_using(self.__fitness_function, *self.__fitness_function_args)
         return child
 
     @property
@@ -148,3 +153,19 @@ class GenyalEngine(GenyalCore):
     def crossover_args(self, args):
         """Sets the arguments needed by the crossover operation."""
         self.__crossover_args = args
+
+    @property
+    def factory_generator_args(self) -> Tuple:
+        return self.__factory_generator_args
+
+    @factory_generator_args.setter
+    def factory_generator_args(self, args: Tuple) -> None:
+        self.__factory_generator_args = args
+
+    @property
+    def fitness_function_args(self) -> Tuple:
+        return self.__fitness_function_args
+
+    @fitness_function_args.setter
+    def fitness_function_args(self, args: Tuple) -> None:
+        self.__fitness_function_args = args
