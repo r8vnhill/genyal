@@ -9,14 +9,15 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 from copy import copy
 
 
-def simple_mutation(original_individual, *args):
+def simple_mutation(original_individual):
     """
     Returns a new individual resulting from mutating the original with a given mutation rate.
     The second argument is a placeholder.
     """
+
     new_individual = copy(original_individual)
     new_individual.genes = [
         gene if new_individual.random_generator.random() <= new_individual.mutation_rate
-        else new_individual.gene_factory.make(*args)
+        else new_individual.gene_factory.make()
         for gene in new_individual.genes]
     return new_individual

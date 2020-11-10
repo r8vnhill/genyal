@@ -26,16 +26,18 @@ def test_basic_factory(seed: int) -> None:
 def test_binary_factory(seed: int) -> None:
     rand_generator = Random(seed)
     factory = GeneFactory(generator=lambda rng: rng.random() > 0.5)
-    assert factory.make(Random(seed)) == (
-            rand_generator.random() > 0.5), "Test failed with seed: {seed}"
+    factory.generator_args = (Random(seed),)
+    assert factory.make() == (rand_generator.random() > 0.5), "Test failed with seed: {seed}"
 
 
 @pytest.mark.repeat(32)
 def test_ascii_factory(seed: int) -> None:
     gene = Random(seed).choice(string.ascii_lowercase)
     factory = GeneFactory()
-    assert factory.make(gene) == id(gene), f"Test failed with seed: {seed}"
+    factory.generator_args = (gene,)
+    assert factory.make() == id(gene), f"Test failed with seed: {seed}"
     factory.generator = lambda: Random(seed).choice(string.ascii_lowercase)
+    factory.generator_args = ()
     assert factory.make() == gene, f"Test failed with seed: {seed}"
 
 

@@ -124,7 +124,6 @@ class GenyalEngine(GenyalCore):
         partner_b = self.__selection_strategy(self.__population, self._random_generator,
                                               *self.__selection_args)
         child = self.mutate(self.crossover(partner_a, partner_b, *self.__crossover_args),
-                            self._random_generator,
                             *self.__mutation_args)
         child.compute_fitness_using(self.__fitness_function, *self.__fitness_function_args)
         return child

@@ -2,6 +2,7 @@
 
 ## Version 0.2
 
+- ``0.2.1`` Implemented persistent arguments for gene factory 
 - ``0.2.0.1`` Fixed issue with wrong number of parameters on the mutation function
 - ``0.2.0`` Genyal's first release.
 

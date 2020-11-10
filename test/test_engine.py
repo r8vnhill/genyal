@@ -26,8 +26,8 @@ def test_basic_engine(seed: int) -> None:
     factory = GeneFactory()
     factory.generator = lambda: random()
     random_generator = Random(seed)
-    population_size = random_generator.randint(0, 300)
-    individual_size = random_generator.randint(0, 100)
+    population_size = random_generator.randint(1, 300)
+    individual_size = random_generator.randint(1, 100)
     basic_engine.create_population(population_size, individual_size, gene_factory=factory)
     assert basic_engine.fittest is not None
     assert len(basic_engine.population) == population_size
@@ -40,7 +40,7 @@ def test_basic_engine(seed: int) -> None:
 def test_word_match_engine(match_word_engine: GenyalEngine, population_size: int,
                            ascii_gene_factory: GeneFactory[str], random_word: str,
                            mutation_rate: float, random_generator: Random, seed: int) -> None:
-    match_word_engine.factory_generator_args = (random_generator,)
+    ascii_gene_factory.generator_args = (random_generator,)
     match_word_engine.fitness_function_args = (random_word,)
     match_word_engine.create_population(population_size, len(random_word), ascii_gene_factory,
                                         mutation_rate)

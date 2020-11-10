@@ -8,7 +8,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 
 from copy import copy
 from random import Random
-from typing import Any, Callable, Generic, List, Optional, get_args
+from typing import Any, Callable, Generic, List, Optional, Tuple, get_args
 
 from genyal.core import DNA, GeneticsError, GenyalCore
 from genyal.genotype import GeneFactory
@@ -28,6 +28,7 @@ class Individual(GenyalCore, Generic[DNA]):
     Most of the handling process of the individuals will be done by the engine (see:
     genyal.engine.GenyalEngine).
     """
+    __factory_args: Tuple
     __fitness: Optional[float]
     __genes: List[DNA]
     __gene_factory: GeneFactory[DNA]
@@ -70,6 +71,7 @@ class Individual(GenyalCore, Generic[DNA]):
         self.__crossover_strategy = crossover_strategy
         self.__mutation_strategy = mutation_strategy
         self.__gene_factory = gene_factory
+        self.__factory_args = ()
 
     @classmethod
     def create(cls, number_of_individuals: int, number_of_genes: int,
@@ -104,8 +106,9 @@ class Individual(GenyalCore, Generic[DNA]):
 
     def set(self, number_of_genes: int, *args):
         """Generate the genes of the individual."""
+        self.__factory_args = args
         for _ in range(0, number_of_genes):
-            self.__genes.append(self.__gene_factory.make(*args))
+            self.__genes.append(self.__gene_factory.make())
 
     def crossover(self, partner: 'Individual[DNA]', *args):
         return self.__crossover_strategy(self, partner, *args)
@@ -171,6 +174,10 @@ class Individual(GenyalCore, Generic[DNA]):
     def gene_factory(self, factory: GeneFactory[DNA]):
         """Sets the factory that generates the genes of this individual."""
         self.__gene_factory = factory
+
+    @property
+    def factory_args(self) -> Tuple:
+        return self.__factory_args
 
     # endregion
 
