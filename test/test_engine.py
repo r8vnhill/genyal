@@ -61,7 +61,7 @@ def ascii_gene_factory() -> GeneFactory[str]:
 @pytest.fixture()
 def random_word(random_generator: Random) -> str:
     word = ""
-    for _ in range(4, 8):
+    for _ in range(0, random_generator.randint(3, 5)):
         word += random_generator.choice(string.ascii_lowercase)
     return word
 
