@@ -34,11 +34,12 @@ class GenyalEngine(GenyalCore):
     def __init__(self, random_generator: Random = Random(),
                  fitness_function: Callable[..., float] = lambda _: 0,
                  selection_strategy=tournament_selection,
-                 terminating_function=default_terminating_function):
+                 terminating_function=default_terminating_function, minimize_fitness=False):
         """
         Initializes the values of the engine.
 
         Args:
+            minimize_fitness:
             random_generator:
                 The random number generator used by the engine.
             fitness_function:
@@ -48,8 +49,13 @@ class GenyalEngine(GenyalCore):
                 The strategy to select the individuals that will participate in the crossover.
             terminating_function:
                 The function that will decide when to stop the evolution.
+            minimize_fitness:
+                if set to True, the fittest individuals are going to be the ones with the lowest
+                fitness.
+                False by default.
         """
         super(GenyalEngine, self).__init__(random_generator)
+        self.__minimize_fitness = minimize_fitness
         self.__population = []
         self.__fitness_function = fitness_function
         self.__fitness_function_args = ()
