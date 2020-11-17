@@ -30,6 +30,10 @@ def create_candidate_factors() -> list[int]:
     return primes
 
 
+def stale_for():
+    """"""
+
+
 if __name__ == '__main__':
     candidate_factors = create_candidate_factors()
     factory = GeneFactory(generator=lambda: random.choice(candidate_factors))

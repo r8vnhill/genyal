@@ -19,6 +19,7 @@ class GenyalEngine(GenyalCore):
     The engine is the main component of Genyal.
     This class is in charge of creating, maintaining and evolving a population.
     """
+    __fittest_record: list[float]
     __fitness_function_args: Tuple
     __factory_generator_args: Tuple
     __crossover_args: Tuple
@@ -39,7 +40,6 @@ class GenyalEngine(GenyalCore):
         Initializes the values of the engine.
 
         Args:
-            minimize_fitness:
             random_generator:
                 The random number generator used by the engine.
             fitness_function:
@@ -67,6 +67,7 @@ class GenyalEngine(GenyalCore):
         self.__terminating_function = terminating_function
         self.__generations = 0
         self.__factory_generator_args = ()
+        self.__fittest_record = []
 
     def create_population(self, population_size: int, individual_size: int,
                           gene_factory: GeneFactory, mutation_rate=0.01):
@@ -87,7 +88,7 @@ class GenyalEngine(GenyalCore):
                                               mutation_rate, *self.__factory_generator_args)
         for member in self.__population:
             member.compute_fitness_using(self.__fitness_function, *self.__fitness_function_args)
-        self.__population.sort()
+        self.__population.sort(reverse=self.__minimize_fitness)
         self.__fittest = self.__population[-1]
 
     def evolve(self, *args):
@@ -107,6 +108,7 @@ class GenyalEngine(GenyalCore):
             new_population.sort()
             self.__population = new_population
             self.__fittest = new_population[-1]
+            self.__fittest_record.append(self.__fittest.fitness)
             self.__generations += 1
 
     def crossover(self, partner_a: Individual, partner_b: Individual, *args) -> Individual:
@@ -174,3 +176,7 @@ class GenyalEngine(GenyalCore):
     @fitness_function_args.setter
     def fitness_function_args(self, args: Tuple) -> None:
         self.__fitness_function_args = args
+
+    @property
+    def fitness_record(self) -> list[float]:
+        return self.__fittest_record
