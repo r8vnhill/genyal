@@ -10,6 +10,7 @@ from random import Random
 from typing import List
 
 from genyal.individuals import Individual
+from genyal.utils.math_utils import cum_difference
 
 
 def tournament_selection(population: List[Individual], random_generator: Random = Random(),
@@ -52,3 +53,18 @@ def default_terminating_function(engine, max_generations=100):
         True when the engine has evolved the population until the indicated generation.
     """
     return engine.generation >= max_generations
+
+
+def stale_for(engine, generations: int) -> bool:
+    """
+    Indicates if the engine population's fitness hasn't change in the last generations.
+
+    Args:
+        engine:
+            the engine running the algorithm
+        generations:
+            the number of generations to check
+    Returns:
+        True if the population hasn't improved in the last generations; False otherswise
+    """
+    return len(engine.fitness_record) >= generations and cum_difference(engine[-generations:])

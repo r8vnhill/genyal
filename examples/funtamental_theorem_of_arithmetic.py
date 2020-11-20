@@ -30,8 +30,19 @@ def create_candidate_factors() -> list[int]:
     return primes
 
 
-def stale_for():
-    """"""
+def stale_for(genyal_engine: GenyalEngine, generations: int) -> bool:
+    """
+    Indicates if the engine population's fitness hasn't change in the last generations.
+
+    Args:
+        genyal_engine:
+            the engine running the algorithm
+        generations:
+            the number of generations to check
+    Returns:
+        True if the population hasn't improved in the last generations; False otherswise
+    """
+    return len(genyal_engine.fitness_record) >= generations
 
 
 if __name__ == '__main__':

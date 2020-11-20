@@ -2,6 +2,7 @@
 
 ## Version 0.2
 
+- ``0.2.2.3``   Added stale_for terminating function
 - ``0.2.2.2``   Added a record for the fitness over generations
 - ``0.2.2.1``   Added minimize_fitness field to GenyalEngine (pending implementation) 
 - ``0.2.1`` Implemented persistent arguments for gene factory 
