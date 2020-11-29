@@ -67,4 +67,9 @@ def stale_for(engine, generations: int) -> bool:
     Returns:
         True if the population hasn't improved in the last generations; False otherswise
     """
-    return len(engine.fitness_record) >= generations and cum_difference(engine[-generations:])
+    stale = True
+    if len(engine.fitness_record) >= generations:
+        for fitness in engine.fitness_record[-generations:]:
+            stale = stale and engine.fitness_record[-generations] == fitness
+        return stale
+    return False
