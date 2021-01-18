@@ -178,6 +178,9 @@ class Individual(GenyalCore, Generic[DNA]):
         """The number of genes of this individual"""
         return len(self.__genes)
 
+    def __str__(self):
+        return str(self.__genes)
+
     def __repr__(self) -> str:
         """An individual is represented by its fitness and its genes."""
         return f"{self.__fitness} - {self.__genes}"
