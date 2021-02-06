@@ -1,5 +1,6 @@
-pytest~=6.1.2
-setuptools~=50.3.2
+pytest~=6.2.1
+setuptools~=51.3.3
 pytest-repeat~=0.9.1
-pandas~=1.1.4
+pandas==1.2.0
 matplotlib~=3.3.3
+numpy~=1.19.5

@@ -44,7 +44,8 @@ def test_word_match_engine(match_word_engine: GenyalEngine, population_size: int
     match_word_engine.fitness_function_args = (random_word,)
     match_word_engine.create_population(population_size, len(random_word), ascii_gene_factory,
                                         mutation_rate)
-    match_word_engine.evolve(random_word)
+    match_word_engine.evolve(random_word, logging=True)
+    print(match_word_engine.evolution_logs)
     assert "".join(match_word_engine.fittest.genes) == random_word, f"Test failed with seed: {seed}"
 
 
