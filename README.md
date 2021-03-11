@@ -1,4 +1,4 @@
-# Genyal: The cheerful genetic algorithm framework
+# Genyal: The friendly genetic algorithm framework
 
 ![http://creativecommons.org/licenses/by/4.0/](https://i.creativecommons.org/l/by/4.0/88x31.png)
 
@@ -32,10 +32,6 @@ pip install genyal
 
 Let's check a very simple example.
 A program to guess a given word.
-
-First, we need a way to create the individuals of the population, in this case, each individual will
-represent a word, and each gene of the individual will be a letter (lowercase).
-For this we can implement a generator function like:
 
 ```python
 import random
