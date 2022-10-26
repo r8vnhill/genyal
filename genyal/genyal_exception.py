@@ -6,5 +6,8 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by/4.0/>.
 """
 
-if __name__ == '__main__':
-    pass
+
+class GenyalException(Exception):
+    def __init__(self, message: str):
+        super().__init__(message)
+        self._message = message

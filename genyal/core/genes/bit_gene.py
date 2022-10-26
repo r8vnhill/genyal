@@ -7,7 +7,7 @@ work. If not, see <https://creativecommons.org/licenses/by/4.0/>.
 """
 import secrets
 
-from genyal.core.genotype.gene import Gene
+from genyal.core.genes.gene import Gene
 
 
 class BitGene(Gene[bool]):
