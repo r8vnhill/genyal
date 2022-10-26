@@ -7,7 +7,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 """
 from copy import copy
 
-from genyal.core import GeneticsError
+from genyal.core.commons import GeneticsError
 
 
 def single_point_crossover(individual, partner, cut_point: int = -1):

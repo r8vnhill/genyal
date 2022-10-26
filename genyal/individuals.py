@@ -10,7 +10,7 @@ from copy import copy
 from random import Random
 from typing import Any, Callable, Generic, List, Optional, Tuple, get_args
 
-from genyal.core import DNA, GeneticsError, GenyalCore
+from genyal.core.commons import DNA, GeneticsError, GenyalCore
 from genyal.genotype import GeneFactory
 from genyal.operations.crossover import single_point_crossover
 from genyal.operations.mutation import simple_mutation

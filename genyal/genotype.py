@@ -7,7 +7,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 """
 from typing import Callable, Generic, Tuple
 
-from genyal.core import DNA
+from genyal.core.commons import DNA
 
 
 class GeneFactory(Generic[DNA]):

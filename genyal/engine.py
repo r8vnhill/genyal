@@ -8,7 +8,7 @@ work. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 from random import Random
 from typing import Any, Callable, List, Optional, Tuple
 
-from genyal.core import GenyalCore
+from genyal.core.commons import GenyalCore
 from genyal.genotype import GeneFactory
 from genyal.individuals import Individual
 from genyal.operations.evolution import default_terminating_function, tournament_selection
