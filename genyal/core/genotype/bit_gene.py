@@ -6,35 +6,34 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by/4.0/>.
 """
 import secrets
-from enum import Enum
 
 from genyal.core.genotype.gene import Gene
 
 
-class BitGene(Gene[bool], Enum):
+class BitGene(Gene[bool]):
     """
     Binary gene.
     """
-    TRUE = ONE = True
-    FALSE = ZERO = False
+
+    def __init__(self, dna: bool = None):
+        """
+        Initializes a binary gene.
+        """
+        if dna is None:
+            dna = secrets.choice([True, False])
+        self._dna = dna
 
     def bit(self):
         """
         Returns the bit value of this gene.
         """
-        return self == BitGene.TRUE
+        return self._dna
 
     def to_bool(self):
         """
         Returns the boolean value of this gene.
         """
-        return self.bit()
-
-    def allele(self):
-        """
-        Returns the allele value of this gene.
-        """
-        return self.bit()
+        return self._dna
 
     @staticmethod
     def is_valid():
@@ -43,15 +42,6 @@ class BitGene(Gene[bool], Enum):
         This method always returns True.
         """
         return True
-
-    @staticmethod
-    def make_gene(dna: bool = None):
-        """
-        Creates a new gene with the given DNA, or a random one if not given.
-        """
-        if dna is None:
-            return BitGene.TRUE if secrets.choice([True, False]) else BitGene.FALSE
-        return BitGene.TRUE if dna else BitGene.FALSE
 
     def __str__(self):
         return "True" if self.bit() else "False"

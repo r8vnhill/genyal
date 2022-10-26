@@ -15,7 +15,7 @@ class Gene(Generic[DNA]):
 
     @property
     def dna(self):
-        return self._dna is True
+        return self._dna
 
     @dna.setter
     def dna(self, value):
