@@ -47,3 +47,9 @@ class BitChromosome(Chromosome[BitGene]):
             raise GenyalException(
                 f"The probability of ones must be between 0 and 1, but it was {probability}")
         return probability
+
+    def ones_count(self) -> int:
+        """
+        Returns the number of ones in the chromosome.
+        """
+        return sum(gene.dna for gene in self._genes)
